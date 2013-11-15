@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
 	$("input#zip_code").keyup(function(){
 		typingTimer = setTimeout(function() {
 			$(document).codeAddress();
-			console.log('taco');
+		console.log('taco');
 	  	}, doneTypingInterval);
 	});
 	//on keydown, clear the countdown 

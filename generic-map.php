@@ -15,7 +15,7 @@ License: GPLv2+
 $generic_map_css = plugin_dir_url(__FILE__) . 'styles/';
 $generic_map_js = plugin_dir_url(__FILE__) . 'js/';
 
-/* Register styles and scripts */
+// Register styles and scripts
 wp_register_style( 'font_awesome', $generic_map_css . 'font-awesome.min.css', '', '0.6.3' );
 wp_register_style( 'leaflet_markers', $generic_map_css . 'leaflet.awesome-markers.css', '', '0.6.3' );
 wp_register_style( 'leaflet_style', $generic_map_css . 'leaflet-0.6.3.css', '', '0.6.3' );
@@ -27,9 +27,9 @@ wp_register_script( 'geojson', get_site_url() . '/wp-content/uploads/geojson.php
 wp_register_script( 'leaflet-config', $generic_map_js . 'leaflet-config.js', '', '', true );
 
 
-/* Enqueue styles */
-add_action( 'wp_enqueue_scripts', 'leaflet_styles' );
-function leaflet_styles() {
+// Enqueue leaflet styles 
+add_action( 'wp_enqueue_scripts', 'generic_map_leaflet_styles' );
+function generic_map_leaflet_styles() {
 	wp_enqueue_style( 'font_awesome' );
 	wp_enqueue_style( 'leaflet_markers' );
 	wp_enqueue_style( 'leaflet_style' );
@@ -41,9 +41,9 @@ function leaflet_styles() {
     wp_enqueue_style( "leaflet-ie" );
 }
 
-/* Register shortcode, on use enqueues scripts */ 
-add_shortcode('leaflet-map', 'map_shortcode');
-function map_shortcode($atts) {
+// Register shortcode
+add_shortcode('leaflet-map', 'generic_map_shortcode');
+function generic_map_shortcode($atts) {
 	wp_enqueue_script( 'leaflet-js' );
 	wp_enqueue_script( 'leaflet-awesome-markers' );
 	wp_enqueue_script( 'geojson' );
@@ -54,7 +54,7 @@ function map_shortcode($atts) {
 		  </div>';
 }
 
-/* Register location post type */
+// Register location post type
 add_action( 'init', 'generic_map_post_types' );
 function generic_map_post_types() {
 
@@ -92,7 +92,7 @@ function generic_map_post_types() {
 	register_post_type( 'location', $args );	
 }
 
-/* Register location symbol custom taxonomy */
+// Register custom taxonomy - location symbol
 add_action( 'init', 'generic_map_add_custom_taxonomy', 0 );
 function generic_map_add_custom_taxonomy() {
 	register_taxonomy('location_symbol', 'location', array(
@@ -114,13 +114,13 @@ function generic_map_add_custom_taxonomy() {
 	));
 }
 
-/* Create ZIP code and coordinates custom meta fields */	
-add_action( 'add_meta_boxes', 'location_meta_box_add' );
-function location_meta_box_add() {
-	add_meta_box( 'location_address', 'Location Address', 'location_meta_box', 'location', 'normal', 'high' );
+// Create custom meta fields - ZIP code and coordinates
+add_action( 'add_meta_boxes', 'generic_map_meta_box_add' );
+function generic_map_meta_box_add() {
+	add_meta_box( 'location_address', 'Location Address', 'generic_map_meta_box', 'location', 'normal', 'high' );
 }
 
-function location_meta_box( $post ) {
+function generic_map_meta_box( $post ) {
 	$values = get_post_custom( $post->ID );
 	$zip_code = isset( $values['zip_code'] ) ? esc_attr( $values['zip_code'][0] ) : '';
 	$coordinates = isset( $values['coordinates'] ) ? esc_attr( $values['coordinates'][0] ) : '';
@@ -137,9 +137,9 @@ function location_meta_box( $post ) {
 	<?php	
 }
 
-/* Save custom meta */
-add_action( 'save_post', 'location_meta_box_save' );
-function location_meta_box_save( $post_id ) {
+// Save custom meta
+add_action( 'save_post', 'generic_map_meta_box_save' );
+function generic_map_meta_box_save( $post_id ) {
 	if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 	
 	if( !isset( $_POST['meta_box_nonce'] ) || !wp_verify_nonce( $_POST['meta_box_nonce'], 'location_address_nonce' ) ) return;
@@ -160,11 +160,11 @@ function location_meta_box_save( $post_id ) {
 }
 		
 
-/* Calculate coordinates based on zip code using Google Maps API */	
-add_action( 'load-post.php', 'generic_map_location_admin_init' );
-add_action( 'load-post-new.php', 'generic_map_location_admin_init' );
+// Calculate coordinates based on zip code using Google Maps API
+add_action( 'load-post.php', 'generic_map_admin_init' );
+add_action( 'load-post-new.php', 'generic_map_admin_init' );
 
-function generic_map_location_admin_init() {
+function generic_map_admin_init() {
 	$generic_map_css = plugin_dir_url(__FILE__) . 'styles/';
 	$generic_map_js = plugin_dir_url(__FILE__) . 'js/';
 	
@@ -173,14 +173,14 @@ function generic_map_location_admin_init() {
 
 	wp_register_script( 'field-automator', $generic_map_js . 'field-automator.js', array( 'jquery', 'googlemaps'  ), '', true );
 					
-	if ($screen->id == 'location' ) {
+	if ( $screen->id == 'location' ) {
 		wp_enqueue_script( 'googlemaps' );
 		wp_enqueue_script( 'field-automator' );
 	}
 }
 
-/* Add refresh/create feed button */
-function plugin_add_settings_link( $links ) {
+// Add refresh/create feed button
+function generic_map_add_settings_link( $links ) {
     if( file_exists('../wp-content/uploads/geojson.php' )){
       $settings_link = '<b><a href="../location/?geo" style="color:#0ca500;">Refresh Cache File</a></b>';
     }
@@ -191,12 +191,12 @@ function plugin_add_settings_link( $links ) {
   	return $links;
 }
 $plugin = plugin_basename( __FILE__ );
-add_filter( "plugin_action_links_$plugin", 'plugin_add_settings_link' );
+
+add_filter( "plugin_action_links_$plugin", 'generic_map_add_settings_link' );
 
 add_action('template_redirect' , 'jsonrequest_template_redirect');
 
-
-/* Create GeoJSON file */
+// Create GeoJSON file
 function jsonrequest_template_redirect() {
 	
 	if ( get_post_type( get_the_ID() ) == "location" && is_archive() ) {
@@ -258,7 +258,8 @@ function jsonrequest_template_redirect() {
 		$terms = get_the_terms( $value['id'], 'location_symbol' );
 		$term = array_pop($terms);
 		$fileContents .='
-			{"geometry": {
+			{
+				"geometry": {
 		            "type": "Point",
 		            "coordinates": ['.$value['meta']['coordinates'][0].']
 		        },
