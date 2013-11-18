@@ -71,7 +71,14 @@ function jsonrequest_template_redirect() {
 			foreach ($output as $key => $value) 
 			{
 				$terms = get_the_terms( $value['id'], 'location_symbol' );
-				$term = array_pop($terms);
+				if(!empty($terms))
+				{
+					$term = array_pop($terms);
+				}
+				else
+				{
+					$term = NULL;
+				}
 				$fileContents .='
 				{
 					"geometry": {
