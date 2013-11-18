@@ -1,3 +1,8 @@
+generic-map
+===========
+
+This is an example of how to map locations in WordPress using custom post types and leafletJS.
+
 To use:
 
 1) Replace API-KEY Placeholders
