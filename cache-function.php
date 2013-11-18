@@ -11,7 +11,7 @@ function jsonrequest_template_redirect() {
 
 	$post_id = $post->ID;
 	
-	//Recive the geo request call from the "Create Cache File" option 
+	//Receive the geo request call from the "Create Cache File" option 
 	if(isset($_REQUEST['geo']))
 	{ 
 	    if( have_posts() )
@@ -33,13 +33,13 @@ function jsonrequest_template_redirect() {
 
 		/**
 		* This is where you specify how frequently you would like the change file to update
-		* +1 month = every month, +1 week = weekely,  +1 day = every day, +1 hour = every hour etc..
+		* +1 month = every month, +1 week = weekly,  +1 day = every day, +1 hour = every hour etc..
 		* more info @ http://www.php.net/manual/en/function.strtotime.php  
 		*/
 		$expiration_date = strtotime("+1 day"); 
 		$now = strtotime("now");
 
-		//Add time trigger to file. Once file is visited we check for experation.
+		//Add time trigger to file. Once file is visited we check for expiration.
 		$callFile = get_site_url().'/location/?geo';
 		if(!empty($output))
 		{
