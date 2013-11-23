@@ -3,9 +3,9 @@ jQuery(document).ready(function($) {
 	var map = L.map('map').setView([36, -78], 7);
 	
 	/* Add API Key Placeholder */
-	L.tileLayer('http://{s}.tile.cloudmade.com/c7c25cdb3bf544a8804f6f6432ea2d28/1/256/{z}/{x}/{y}.png', {
+	L.tileLayer('http://{s}.tile.cloudmade.com/API-KEY/1/256/{z}/{x}/{y}.png', {
 		attribution: 'Map data &copy; 2013 OpenStreetMap contributors, Imagery &copy; 2013 CloudMade',
-		key: 'c7c25cdb3bf544a8804f6f6432ea2d28'
+		key: 'API-KEY'
 	}).addTo(map);
 		
 	/* Make a popup for each map marker */

@@ -169,7 +169,7 @@ function generic_map_admin_init() {
 	$generic_map_js = plugin_dir_url(__FILE__) . 'js/';
 	
     $screen = get_current_screen();
-	wp_register_script( 'googlemaps', 'http://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBrp6oUKq1reA5Pu_5ebqHh7Gdvibqg0tE&sensor=false' );
+	wp_register_script( 'googlemaps', 'http://maps.googleapis.com/maps/api/js?v=3&key=API-KEY&sensor=false' );
 
 	wp_register_script( 'field-automator', $generic_map_js . 'field-automator.js', array( 'jquery', 'googlemaps'  ), '', true );
 					
