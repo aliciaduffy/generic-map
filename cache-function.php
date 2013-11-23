@@ -51,8 +51,8 @@ function jsonrequest_template_redirect() {
 		        
 		        if ( $expiration_date < $now ) {
 					echo "expired";
-					$refres_file = file_get_contents("'.$callFile.'");
-					if ( $refres_file ) {
+					$refresh_file = file_get_contents("'.$callFile.'");
+					if ( $refresh_file ) {
 						echo "<meta http-equiv=\"refresh\" content=\"5\"> Refreshing...";
 					} 
 		        } else {
