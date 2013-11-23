@@ -29,7 +29,8 @@ function jsonrequest_template_redirect() {
 	  
 		//define the file an place in the uploads directory
 		$upload_dir = wp_upload_dir();
-		$theFile = $upload_dir['basedir'].'/geojson.php';
+		//Current Cache file
+		$cacheFile = $upload_dir['basedir'].'/geojson.php';
 
 		/**
 		* This is where you specify how frequently you would like the change file to update
@@ -50,10 +51,10 @@ function jsonrequest_template_redirect() {
 		        $now = strtotime("now");
 		        
 		        if ( $expiration_date < $now ) {
-					echo "expired";
+					
 					$refresh_file = file_get_contents("'.$callFile.'");
 					if ( $refresh_file ) {
-						echo "<meta http-equiv=\"refresh\" content=\"5\"> Refreshing...";
+						echo file_get_contents("'.$cacheFile.'");
 					} 
 		        } else {
 		
@@ -104,7 +105,7 @@ function jsonrequest_template_redirect() {
 	    		<?php } ?>';
 
 	   		//writefile
-	   		file_put_contents("$theFile", $fileContents);
+	   		file_put_contents("$cacheFile", $fileContents);
 	    	echo "A new cache file has been created at <b>".site_url()."/wp-content/uploads/geojson.php</b>. ";
 	    	die();
 		}
