@@ -1,7 +1,7 @@
 generic-map
 ===========
 
-This is an example of how to map locations in WordPress using custom post types and leafletJS.
+This is an example plugin demonstrating how to map locations in WordPress using custom post types and leafletJS. Created for WordCamp Raleigh 2013 - slides here: [http://www.slideshare.net/aliciaduffy/responsive-maps](http://www.slideshare.net/aliciaduffy/responsive-maps)
 
 To use:
 
